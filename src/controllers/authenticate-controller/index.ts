@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { AuthenticateBodySchema, authenticateBodySchema } from './body-schemaa'
+import { AuthenticateBodySchema, authenticateBodySchema } from './body-schema'
 import { JwtService } from '@nestjs/jwt'
 import { compare } from 'bcryptjs'
 
@@ -43,7 +43,7 @@ export class AuthenticateController {
       sub: user.id,
     })
     return {
-      acces_token: accesToken,
+      access_token: accesToken,
     }
   }
 }

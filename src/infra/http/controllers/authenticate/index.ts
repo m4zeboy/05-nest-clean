@@ -5,11 +5,11 @@ import {
   UnauthorizedException,
   UsePipes,
 } from '@nestjs/common'
-import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
-import { PrismaService } from 'src/prisma/prisma.service'
 import { AuthenticateBodySchema, authenticateBodySchema } from './body-schema'
 import { JwtService } from '@nestjs/jwt'
 import { compare } from 'bcryptjs'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 
 @Controller('/sessions')
 export class AuthenticateController {

@@ -5,16 +5,16 @@ import {
 } from './body-schema'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
+import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question'
 
 const bodyValidationPipe = new ZodValidationPipe(createQuestionBodySchema)
 
 @Controller('/questions')
 @UseGuards(JwtAuthGuard)
 export class CreateQuestionController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private createQuestion: CreateQuestionUseCase) {}
   @Post()
   async handle(
     @CurrentUser() user: UserPayload,
@@ -22,22 +22,11 @@ export class CreateQuestionController {
   ) {
     const { content, title } = body
     const { sub: authorId } = user
-    await this.prisma.question.create({
-      data: {
-        content,
-        title,
-        slug: this.convertToSlug(title),
-        authorId,
-      },
+    await this.createQuestion.execute({
+      title,
+      content,
+      authorId,
+      attachmentsIds: [],
     })
-  }
-
-  private convertToSlug(title: string): string {
-    return title
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
   }
 }

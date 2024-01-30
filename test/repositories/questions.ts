@@ -33,8 +33,6 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
   async create(question: Question) {
     this.items.push(question)
     DomainEvents.dispatchEventsForAggregate(question.id)
-
-    return question
   }
 
   async delete(question: Question) {

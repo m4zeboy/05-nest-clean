@@ -3,7 +3,7 @@ import { HashGenerator } from '@/domain/forum/application/cryptography/hash-gene
 
 export class FakeHaser implements HashGenerator, HashComparer {
   async hash(plain: string): Promise<string> {
-    return plain.concat('-hasehd')
+    return plain.concat('-hashed')
   }
 
   async compare(plain: string, hash: string): Promise<boolean> {

@@ -5,12 +5,12 @@ import { HashComparer } from '../cryptography/hash-comparer'
 import { Encrypter } from '../cryptography/encrypter'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
-interface AAuthenticateStudentUseCaseRequest {
+interface AuthenticateStudentUseCaseRequest {
   email: string
   password: string
 }
 
-type AAuthenticateStudentUseCaseResponse = Either<
+type AuthenticateStudentUseCaseResponse = Either<
   InvalidCredentialsError,
   {
     accessToken: string
@@ -27,9 +27,8 @@ export class AuthenticateStudentUseCase {
   async execute({
     email,
     password,
-  }: AAuthenticateStudentUseCaseRequest): Promise<AAuthenticateStudentUseCaseResponse> {
+  }: AuthenticateStudentUseCaseRequest): Promise<AuthenticateStudentUseCaseResponse> {
     const student = await this.studentsRepository.findByEmail(email)
-
     if (!student) {
       return failure(new InvalidCredentialsError())
     }

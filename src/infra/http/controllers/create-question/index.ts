@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+} from '@nestjs/common'
 import {
   CreateQuestionBodySchema,
   createQuestionBodySchema,
@@ -22,11 +28,15 @@ export class CreateQuestionController {
   ) {
     const { content, title } = body
     const { sub: authorId } = user
-    await this.createQuestion.execute({
+    const result = await this.createQuestion.execute({
       title,
       content,
       authorId,
       attachmentsIds: [],
     })
+
+    if (result.isFailure()) {
+      throw new BadRequestException()
+    }
   }
 }

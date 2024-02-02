@@ -1,4 +1,10 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+} from '@nestjs/common'
 
 import {
   PageQueryParamSchema,
@@ -22,7 +28,7 @@ export class FetchRecentQuestionsController {
       page,
     })
     if (result.isFailure()) {
-      throw new Error()
+      throw new BadRequestException()
     }
     const questions = result.value.questions
 

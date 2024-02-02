@@ -1,7 +1,15 @@
-import { Body, Controller, Post, UsePipes } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UnauthorizedException,
+  UsePipes,
+} from '@nestjs/common'
 import { AuthenticateBodySchema, authenticateBodySchema } from './body-schema'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 import { AuthenticateStudentUseCase } from '@/domain/forum/application/use-cases/authenticate-student'
+import { InvalidCredentialsError } from '@/domain/forum/application/use-cases/errors/invalid-credentials-error'
 
 @Controller('/sessions')
 export class AuthenticateController {
@@ -17,7 +25,13 @@ export class AuthenticateController {
       password,
     })
     if (result.isFailure()) {
-      throw new Error()
+      const error = result.value
+      switch (error.constructor) {
+        case InvalidCredentialsError:
+          throw new UnauthorizedException(error.message)
+        default:
+          throw new BadRequestException()
+      }
     }
     const { accessToken } = result.value
     return {

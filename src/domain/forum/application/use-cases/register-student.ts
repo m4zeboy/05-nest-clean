@@ -30,6 +30,7 @@ export class RegisterStudentUseCase {
     email,
     password,
   }: RegisterStudentUseCaseRequest): Promise<RegisterStudentUseCaseResponse> {
+    console.log(email)
     const studentWithSameEmail =
       await this.studentsRepository.findByEmail(email)
 

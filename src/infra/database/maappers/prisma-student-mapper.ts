@@ -18,7 +18,7 @@ export class PrismaStudentMapper {
     return {
       id: student.id.toString(),
       name: student.name,
-      email: student.name,
+      email: student.email,
       password: student.password,
       role: 'STUDENT',
     }

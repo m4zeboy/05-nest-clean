@@ -10,8 +10,10 @@ import { AuthenticateBodySchema, authenticateBodySchema } from './body-schema'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 import { AuthenticateStudentUseCase } from '@/domain/forum/application/use-cases/authenticate-student'
 import { InvalidCredentialsError } from '@/domain/forum/application/use-cases/errors/invalid-credentials-error'
+import { Public } from '@/infra/auth/public'
 
 @Controller('/sessions')
+@Public()
 export class AuthenticateController {
   constructor(private authenticateStudent: AuthenticateStudentUseCase) {}
 
